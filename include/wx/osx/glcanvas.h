@@ -88,6 +88,9 @@ public:
     // update the view port of the current context to match this window
     void SetViewport();
 
+    void SetViewWantsBestResolution( bool aValue );
+    bool GetViewWantsBestResolution();
+    float GetBackingScaleFactor();
 
     // deprecated methods
     // ------------------

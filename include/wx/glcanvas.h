@@ -19,6 +19,8 @@
 #include "wx/palette.h"
 #include "wx/window.h"
 
+#define RETINA_OPENGL_PATCH
+
 class WXDLLIMPEXP_FWD_GL wxGLCanvas;
 class WXDLLIMPEXP_FWD_GL wxGLContext;
 

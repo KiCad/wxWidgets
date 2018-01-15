@@ -326,6 +326,22 @@ bool wxGLCanvas::SwapBuffers()
     return true;
 }
 
+void wxGLCanvas::SetViewWantsBestResolution( bool aValue )
+{
+    [GetHandle() setWantsBestResolutionOpenGLSurface:aValue];
+}
+
+bool wxGLCanvas::GetViewWantsBestResolution()
+{
+    return [GetHandle() wantsBestResolutionOpenGLSurface];
+}
+
+float wxGLCanvas::GetBackingScaleFactor()
+{
+    return [[GetHandle() window] backingScaleFactor];
+}
+
+
 bool wxGLContext::SetCurrent(const wxGLCanvas& win) const
 {
     if ( !m_glContext )
