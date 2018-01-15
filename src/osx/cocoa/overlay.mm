@@ -34,6 +34,7 @@
 #include "wx/private/overlay.h"
 
 #ifdef wxHAS_NATIVE_OVERLAY
+#import <Foundation/NSGeometry.h>
 
 // ============================================================================
 // implementation
@@ -42,7 +43,6 @@
 wxOverlayImpl::wxOverlayImpl()
 {
     m_window = NULL ;
-    m_overlayContext = NULL ;
     m_overlayWindow = NULL ;
 }
 
@@ -58,48 +58,6 @@ bool wxOverlayImpl::IsOk()
 
 void wxOverlayImpl::CreateOverlayWindow()
 {
-    if ( m_window )
-    {
-        m_overlayParentWindow = m_window->MacGetTopLevelWindowRef();
-        [m_overlayParentWindow makeKeyAndOrderFront:nil];
-        
-        NSView* view = m_window->GetHandle();
-
-        NSPoint viewOriginBase, viewOriginScreen;
-        viewOriginBase = [view convertPoint:NSMakePoint(0, 0) toView:nil];
-        viewOriginScreen = [m_overlayParentWindow convertBaseToScreen:viewOriginBase];
-        
-        NSSize viewSize = [view frame].size;
-        if ( [view isFlipped] )
-            viewOriginScreen.y -= viewSize.height;
-        
-        m_overlayWindow=[[NSWindow alloc] initWithContentRect:NSMakeRect(viewOriginScreen.x,viewOriginScreen.y,
-                                                                         viewSize.width,
-                                                                         viewSize.height) 
-                                                    styleMask:NSBorderlessWindowMask 
-                                                      backing:NSBackingStoreBuffered 
-                                                        defer:YES];
-        
-        [m_overlayParentWindow addChildWindow:m_overlayWindow ordered:NSWindowAbove];
-    }
-    else
-    {
-        m_overlayParentWindow = NULL ;
-        CGRect cgbounds ;
-        cgbounds = CGDisplayBounds(CGMainDisplayID());
- 
-        m_overlayWindow=[[NSWindow alloc] initWithContentRect:NSMakeRect(cgbounds.origin.x,cgbounds.origin.y,
-                                                                       cgbounds.size.width,
-                                                                       cgbounds.size.height) 
-                                                  styleMask:NSBorderlessWindowMask 
-                                                    backing:NSBackingStoreBuffered 
-                                                      defer:YES];
-    }
-    [m_overlayWindow setOpaque:NO];
-    [m_overlayWindow setIgnoresMouseEvents:YES];
-    [m_overlayWindow setAlphaValue:1.0];
-    
-    [m_overlayWindow orderFront:nil];
 }
 
 void wxOverlayImpl::Init( wxDC* dc, int x , int y , int width , int height )
@@ -107,84 +65,49 @@ void wxOverlayImpl::Init( wxDC* dc, int x , int y , int width , int height )
     wxASSERT_MSG( !IsOk() , _("You cannot Init an overlay twice") );
 
     m_window = dc->GetWindow();
-    m_x = x ;
-    m_y = y ;
-    if ( dc->IsKindOf( CLASSINFO( wxClientDC ) ))
-    {
-        wxPoint origin = m_window->GetClientAreaOrigin();
-        m_x += origin.x;
-        m_y += origin.y;
-    }
-    m_width = width ;
-    m_height = height ;
-
-    CreateOverlayWindow();
-    wxASSERT_MSG(  m_overlayWindow != NULL , _("Couldn't create the overlay window") );
-    m_overlayContext = (CGContextRef) [[m_overlayWindow graphicsContext] graphicsPort];
-    wxASSERT_MSG(  m_overlayContext != NULL , _("Couldn't init the context on the overlay window") );
-
-    int ySize = 0;
-    if ( m_window )
-    {
-        NSView* view = m_window->GetHandle();    
-        NSSize viewSize = [view frame].size;
-        ySize = viewSize.height;
-    }
-    else
-    {
-        CGRect cgbounds ;
-        cgbounds = CGDisplayBounds(CGMainDisplayID());
-        ySize = cgbounds.size.height;
-        
-        
-        
-    }
-    CGContextTranslateCTM( m_overlayContext, 0, ySize );
-    CGContextScaleCTM( m_overlayContext, 1, -1 );
-    CGContextTranslateCTM( m_overlayContext, -m_x , -m_y );
+	m_overlayWindow = m_window->MacGetTopLevelWindowRef();
+	
+	NSRect box = [m_overlayWindow frame];
+	box.origin.x = 0;
+	box.origin.y = 0;
+	
+	if( [m_overlayWindow isVisible] ) 	
+	{
+		[m_overlayWindow discardCachedImage];
+		[m_overlayWindow cacheImageInRect:box];
+	}
 }
 
 void wxOverlayImpl::BeginDrawing( wxDC* dc)
 {
-    wxDCImpl *impl = dc->GetImpl();
-    wxGCDCImpl *win_impl = wxDynamicCast(impl,wxGCDCImpl);
-    if (win_impl)
-    {
-        win_impl->SetGraphicsContext( wxGraphicsContext::CreateFromNative( m_overlayContext ) );
-        dc->SetClippingRegion( m_x , m_y , m_width , m_height ) ;
-    }
 }
 
 void wxOverlayImpl::EndDrawing( wxDC* dc)
 {
-    wxDCImpl *impl = dc->GetImpl();
-    wxGCDCImpl *win_impl = wxDynamicCast(impl,wxGCDCImpl);
-    if (win_impl)
-        win_impl->SetGraphicsContext(NULL);
-
-    CGContextFlush( m_overlayContext );
 }
 
-void wxOverlayImpl::Clear(wxDC* WXUNUSED(dc))
+void wxOverlayImpl::Clear( wxDC* WXUNUSED(dc) )
 {
     wxASSERT_MSG( IsOk() , _("You cannot Clear an overlay that is not inited") );
-    CGRect box  = CGRectMake( m_x - 1, m_y - 1 , m_width + 2 , m_height + 2 );
-    CGContextClearRect( m_overlayContext, box );
+    
+	if( [m_overlayWindow isVisible] ) 
+	{
+		[m_overlayWindow restoreCachedImage];
+//		[m_overlayWindow flushWindow]; 
+	}
 }
 
 void wxOverlayImpl::Reset()
 {
-    if ( m_overlayContext )
-    {
-        m_overlayContext = NULL ;
-    }
-
     // todo : don't dispose, only hide and reposition on next run
-    if (m_overlayWindow)
+    if (m_overlayWindow &&  [m_overlayWindow isVisible])
     {
-        [m_overlayParentWindow removeChildWindow:m_overlayWindow];
-        [m_overlayWindow release];
-        m_overlayWindow = NULL ;
+		NSRect box = [m_overlayWindow frame];
+		box.origin.x = 0;
+		box.origin.y = 0;
+		
+		[m_overlayWindow discardCachedImage];
+		[m_overlayWindow cacheImageInRect:box];
     }
 }
 

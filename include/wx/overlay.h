@@ -13,7 +13,7 @@
 
 #include "wx/defs.h"
 
-#if defined(__WXMAC__) && wxOSX_USE_CARBON
+#if defined(__WXMAC__) && wxOSX_USE_COCOA_OR_CARBON
     #define wxHAS_NATIVE_OVERLAY 1
 #elif defined(__WXDFB__)
     #define wxHAS_NATIVE_OVERLAY 1

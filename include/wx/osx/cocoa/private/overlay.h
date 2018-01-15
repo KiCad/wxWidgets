@@ -41,15 +41,8 @@ private:
     void CreateOverlayWindow();
 
     WXWindow m_overlayWindow;
-    WXWindow m_overlayParentWindow;
-    CGContextRef m_overlayContext ;
     // we store the window in case we would have to issue a Refresh()
     wxWindow* m_window ;
-
-    int m_x ;
-    int m_y ;
-    int m_width ;
-    int m_height ;
 } ;
 
 #endif // _WX_MAC_CARBON_PRIVATE_OVERLAY_H_
