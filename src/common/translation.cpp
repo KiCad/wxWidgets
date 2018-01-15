@@ -1624,6 +1624,9 @@ wxString wxTranslations::GetBestTranslation(const wxString& domain,
 /* static */
 const wxString& wxTranslations::GetUntranslatedString(const wxString& str)
 {
+    // Marco Serantoni - Dirty Patch
+    // Awaiting for http://trac.wxwidgets.org/ticket/15908
+    if( gs_translationsOwned == false) return str; 
     wxLocaleUntranslatedStrings& strings = wxThreadInfo.untranslatedStrings;
 
     wxLocaleUntranslatedStrings::iterator i = strings.find(str);
