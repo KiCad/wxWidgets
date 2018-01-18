@@ -79,6 +79,9 @@ protected:
     // end window modal dialog.
     void EndWindowModal();
 
+    // hack to keep window behind quasi-modal dialog from being fronted
+    void ReparentQuasiModal();
+
     // mac also takes command-period as cancel
     virtual bool IsEscapeKey(const wxKeyEvent& event);
 
