@@ -2684,6 +2684,7 @@ void wxDataViewRenderer::OSXApplyAttr(const wxDataViewItemAttr& attr)
     // cell rendered using the same renderer
     NSFont *font = NULL;
     NSColor *colText = NULL;
+    NSColor *colBack = NULL;
 
     if ( attr.HasFont() )
     {
@@ -2730,6 +2731,19 @@ void wxDataViewRenderer::OSXApplyAttr(const wxDataViewItemAttr& attr)
         }
     }
 
+    if ( attr.HasBackgroundColour() )
+    {
+        if ( [cell respondsToSelector:@selector(setBackgroundColor:)] &&
+                [cell respondsToSelector:@selector(backgroundColor)] )
+        {
+            const wxColour& c = attr.GetBackgroundColour();
+            colBack = [NSColor colorWithCalibratedRed:c.Red() / 255.
+                green:c.Green() / 255.
+                blue:c.Blue() / 255.
+                alpha:c.Alpha() / 255.];
+        }
+    }
+
     if ( !font )
         font = data->GetOriginalFont();
     if ( !colText )
@@ -2740,6 +2754,14 @@ void wxDataViewRenderer::OSXApplyAttr(const wxDataViewItemAttr& attr)
 
     if ( colText )
         [(id)cell setTextColor:colText];
+
+    if ( colBack )
+    {
+        [(id)cell setDrawsBackground:true];
+        [(id)cell setBackgroundColor:colBack];
+    }
+    else
+        [(id)cell setDrawsBackground:false];
 }
 
 void wxDataViewRenderer::OSXApplyEnabled(bool enabled)
