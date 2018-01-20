@@ -10,8 +10,27 @@
 /setup.h
 /*tags
 /autom4te.cache
+/wx-bin
 
 # /build/
+/build/.deps
+/build/bk-deps
+/build/.pch
+/build/bk-make-pch
+/build/change-install-names
+/build/shared-ld-sh
+/build/Makefile
+/build/config.log
+/build/config.status
+/build/wx-config
+/build/demos
+/build/lib
+/build/samples
+/build/src
+/build/tests
+/build/utils
+/build/*.a
+/build/*.o
 
 # /build/autoconf_prepend-include/autoconf/
 /build/autoconf_prepend-include/autoconf/autoconf.m4f
@@ -430,3 +449,7 @@
 # /utils/wxrc/
 /utils/wxrc/*.sln
 /utils/wxrc/*.dsw
+
+# editor/OS fluff
+.DS_Store
+
