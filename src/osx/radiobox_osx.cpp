@@ -113,6 +113,9 @@ bool wxRadioBox::Create( wxWindow *parent,
 
     SetPeer(wxWidgetImpl::CreateGroupBox( this, parent, id, label, pos, size, style, GetExtraStyle() ));
 
+    // Column-oriented radioBoxes contain left-aligned buttons, always and forever.
+    long alignment = (style & wxRA_SPECIFY_COLS) ? wxLEFT : 0;
+
     for (int i = 0; i < n; i++)
     {
         wxRadioButton *radBtn = new wxRadioButton(
@@ -121,7 +124,7 @@ bool wxRadioBox::Create( wxWindow *parent,
             GetLabelText(choices[i]),
             wxPoint( 5, 20 * i + 10 ),
             wxDefaultSize,
-            i == 0 ? wxRB_GROUP : 0 );
+            alignment | ( (i == 0) ? wxRB_GROUP : 0 ) );
 
         if ( i == 0 )
             m_radioButtonCycle = radBtn;

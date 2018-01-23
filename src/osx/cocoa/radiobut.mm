@@ -30,6 +30,7 @@ extern void wxOSX_controlAction(NSView* self, SEL _cmd, id sender);
 @interface wxNSRadioButton : NSButton
 {
     NSTrackingRectTag rectTag;
+    long m_style;
 }
 
 @end
@@ -47,6 +48,21 @@ extern void wxOSX_controlAction(NSView* self, SEL _cmd, id sender);
             class_addMethod(self, NSSelectorFromString([NSString stringWithFormat: alternateActionsSelector, i]), (IMP) wxOSX_controlAction, "v@:@" );
         }
     }
+}
+
+- (void) setFrameOrigin: (NSPoint) origin
+{
+    if ( m_style & wxLEFT )
+    {
+        // Force to left alignment
+        origin.x = 14;
+    }
+    [super setFrameOrigin: origin ];
+}
+
+- (void) setStyle: (long) style
+{
+    m_style = style;
 }
 
 - (void) setState: (NSInteger) v
@@ -102,16 +118,17 @@ wxWidgetImplType* wxWidgetImpl::CreateRadioButton( wxWindowMac* wxpeer,
                                     const wxString& WXUNUSED(label),
                                     const wxPoint& pos,
                                     const wxSize& size,
-                                    long WXUNUSED(style),
+                                    long style,
                                     long WXUNUSED(extraStyle))
 {
     NSRect r = wxOSXGetFrameForControl( wxpeer, pos , size ) ;
     wxNSRadioButton* v = [[wxNSRadioButton alloc] initWithFrame:r];
 
-    [v setButtonType:NSRadioButton];
+    [v setButtonType: NSRadioButton];
+    [v setStyle: style];
 
     static int alternateAction = 1;
- 
+
     [v setAction: NSSelectorFromString([NSString stringWithFormat: alternateActionsSelector, alternateAction])];
     if ( ++alternateAction > maxAlternateActions )
         alternateAction = 1;
