@@ -125,14 +125,14 @@
     if ( menuimpl )
     {
         wxMenu* wxpeer = (wxMenu*) menuimpl->GetWXPeer();
+        wxMenuItem* wxpeeritem = nullptr;
         if ( [ item isKindOfClass:[wxNSMenuItem class] ] )
         {
             wxMenuItemImpl* menuitemimpl = (wxMenuItemImpl*) [ (wxNSMenuItem*) item implementation ];
-            if ( wxpeer && menuitemimpl )
-            {
-                wxpeer->HandleMenuItemHighlighted( menuitemimpl->GetWXPeer() );
-            }
+            if ( menuitemimpl )
+                wxpeeritem = menuitemimpl->GetWXPeer();
         }
+        wxpeer->HandleMenuItemHighlighted( wxpeeritem );
     }
 }
 
