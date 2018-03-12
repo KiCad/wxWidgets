@@ -55,7 +55,7 @@ void wxGenericRichMessageDialog::AddMessageDialogCheckBox(wxSizer *sizer)
         m_checkBox = new wxCheckBox(this, wxID_ANY, m_checkBoxText);
         m_checkBox->SetValue(m_checkBoxValue);
 
-        sizer->Add(m_checkBox, wxSizerFlags().Left().Border(wxLEFT|wxTOP, 10));
+        sizer->Add(m_checkBox, wxSizerFlags().Left().Border(wxLEFT|wxTOP, 30));
     }
 }
 
