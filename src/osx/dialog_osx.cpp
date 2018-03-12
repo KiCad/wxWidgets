@@ -152,6 +152,9 @@ int wxDialog::ShowModal()
 
     m_eventLoop = NULL;
 
+    if( m_parent )
+        m_parent->Raise();
+
     return GetReturnCode();
 }
 
