@@ -1128,3 +1128,14 @@ wxNonOwnedWindowImpl* wxNonOwnedWindowImpl::CreateNonOwnedWindow( wxNonOwnedWind
     return now;
 }
 
+void wxNonOwnedWindow::ReparentQuasiModal()
+{
+    wxTopLevelWindow* parent = static_cast<wxTopLevelWindow*>(wxGetTopLevelParent(GetParent()));
+
+    wxASSERT_MSG(parent, "QuasiModal dialogs require a parent.");
+
+    NSWindow* parentWindow = parent->GetWXWindow();
+    NSWindow* theWindow = GetWXWindow();
+
+    [parentWindow addChildWindow:theWindow ordered:NSWindowAbove];
+}

@@ -65,6 +65,9 @@ public:
 
     virtual wxPoint GetClientAreaOrigin() const;
     
+    // hack to keep window behind quasi-modal KIWAY_PLAYER from being fronted
+    void ReparentQuasiModal();
+
     // implement base class pure virtuals
 
     virtual bool SetTransparent(wxByte alpha);
