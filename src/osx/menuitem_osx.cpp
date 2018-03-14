@@ -36,8 +36,6 @@ wxMenuItem::wxMenuItem(wxMenu *pParentMenu,
                        wxMenu *pSubMenu)
            :wxMenuItemBase(pParentMenu, id, t, strHelp, kind, pSubMenu)
 {
-    wxASSERT_MSG( id != 0 || pSubMenu != NULL , wxT("A MenuItem ID of Zero does not work under Mac") ) ;
-
     // In other languages there is no difference in naming the Exit/Quit menu item between MacOS and Windows guidelines
     // therefore these item must not be translated
     if (pParentMenu != NULL && !pParentMenu->GetNoEventsMode())
@@ -107,7 +105,7 @@ void wxMenuItem::UncheckRadio()
 void wxMenuItem::Check(bool bDoCheck)
 {
     wxCHECK_RET( IsCheckable() && !IsSeparator(), wxT("only checkable items may be checked") );
-
+    
     if ( m_isChecked != bDoCheck )
     {
         if ( GetKind() == wxITEM_RADIO )
