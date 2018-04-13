@@ -5539,11 +5539,9 @@ void wxGrid::DrawCell( wxDC& dc, const wxGridCellCoords& coords )
         // edit control is erased by this code after being rendered.
         // On wxMac (QD build only), the cell editor is a wxTextCntl and is rendered
         // implicitly, causing this out-of order render.
-#if !defined(__WXMAC__)
         wxGridCellEditor *editor = attr->GetEditor(this, row, col);
         editor->PaintBackground(dc, rect, *attr);
         editor->DecRef();
-#endif
     }
     else
     {
