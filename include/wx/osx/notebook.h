@@ -81,6 +81,8 @@ public:
   // hit test
   virtual int HitTest(const wxPoint& pt, long *flags = NULL) const;
 
+  void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO) override;
+
   // calculate size for wxNotebookSizer
   wxSize CalcSizeFromPage(const wxSize& sizePage) const;
   wxRect GetPageRect() const ;

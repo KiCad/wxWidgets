@@ -2706,7 +2706,7 @@ void wxStdDialogButtonSizer::Realize()
         }
 
         // Extra space around and at the right
-        Add(12, 40);
+        Add(8, 32);
 #elif defined(__WXGTK20__)
         // http://library.gnome.org/devel/hig-book/stable/windows-alert.html.en
         // says that the correct button order is
