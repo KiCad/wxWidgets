@@ -616,6 +616,15 @@ void wxWindowMac::SetFocus()
     GetPeer()->SetFocus() ;
 }
 
+void wxWindowMac::OSXForceFocus()
+{
+    wxWindow* former = FindFocus();
+    if ( former == this )
+        return ;
+
+    GetPeer()->ForceFocus();
+}
+
 void wxWindowMac::OSXSimulateFocusEvents()
 {
     wxWeakRef<wxWindow> former = FindFocus() ;

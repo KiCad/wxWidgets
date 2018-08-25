@@ -290,6 +290,7 @@ public :
     // return true if successful
     virtual bool        SetFocus() = 0;
     virtual bool        HasFocus() const = 0;
+    virtual void        ForceFocus() { SetFocus(); }
 
     virtual void        RemoveFromParent() = 0;
     virtual void        Embed( wxWidgetImpl *parent ) = 0;

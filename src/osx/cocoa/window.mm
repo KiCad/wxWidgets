@@ -2382,6 +2382,11 @@ bool wxWidgetCocoaImpl::SetFocus()
     return true;
 }
 
+void wxWidgetCocoaImpl::ForceFocus()
+{
+    [[m_osxView window] makeFirstResponder: m_osxView] ;
+}
+
 #if wxUSE_DRAG_AND_DROP
 void wxWidgetCocoaImpl::SetDropTarget(wxDropTarget* target)
 {

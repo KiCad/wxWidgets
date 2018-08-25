@@ -288,6 +288,7 @@ public:
     virtual bool        OSXHandleClicked( double timestampsec );
     virtual bool        OSXHandleKeyEvent( wxKeyEvent& event );
     virtual void        OSXSimulateFocusEvents();
+    virtual void        OSXForceFocus();
 
     bool                IsNativeWindowWrapper() const { return m_isNativeWindowWrapper; }
     
