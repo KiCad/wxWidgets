@@ -55,7 +55,7 @@ extern void wxOSX_controlAction(NSView* self, SEL _cmd, id sender);
     if ( m_style & wxLEFT )
     {
         // Force to left alignment
-        origin.x = 14;
+        origin.x = 10;
     }
     [super setFrameOrigin: origin ];
 }
