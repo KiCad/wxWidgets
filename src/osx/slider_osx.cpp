@@ -28,7 +28,7 @@ END_EVENT_TABLE()
 #endif
 
 // Distance between slider and text
-#define wxSLIDER_BORDERTEXT_X 13
+#define wxSLIDER_BORDERTEXT_X 26
 #define wxSLIDER_BORDERTEXT_Y 4
 
 #define wxSLIDER_PADDING (-4)
@@ -434,7 +434,7 @@ void wxSlider::DoSetSize(int x, int y, int w, int h, int sizeFlags)
         // the labels need to know the position of this control
         // relative to its parent in order to size properly, so
         // move the control first so we can use GetPosition()
-        wxControl::DoSetSize( x + wxSLIDER_PADDING, y + wxSLIDER_PADDING, w + wxSLIDER_PADDING * 2, h + wxSLIDER_PADDING, sizeFlags );
+        wxControl::DoSetSize( x + wxSLIDER_PADDING, y + wxSLIDER_PADDING, w - wxSLIDER_PADDING * 2, h + wxSLIDER_PADDING, sizeFlags );
 
         if (GetWindowStyle() & wxSL_VERTICAL)
             // If vertical, use current value
@@ -463,9 +463,9 @@ void wxSlider::DoSetSize(int x, int y, int w, int h, int sizeFlags)
         else
         {
             if ( m_macMinimumStatic )
-                m_macMinimumStatic->Move(GetPosition().x + (minValWidth / 2), GetPosition().y + sliderBreadth + wxSLIDER_BORDERTEXT_Y);
+                m_macMinimumStatic->Move(GetPosition().x, GetPosition().y + sliderBreadth + wxSLIDER_BORDERTEXT_Y);
             if ( m_macMaximumStatic )
-                 m_macMaximumStatic->Move(GetPosition().x + w - (maxValWidth * 3 / 2), GetPosition().y + sliderBreadth + wxSLIDER_BORDERTEXT_Y);
+                 m_macMaximumStatic->Move(GetPosition().x + w - (maxValWidth / 2), GetPosition().y + sliderBreadth + wxSLIDER_BORDERTEXT_Y);
             if ( m_macValueStatic )
                 m_macValueStatic->Move(GetPosition().x + (w / 2) - (valValWidth / 2), GetPosition().y + sliderBreadth + wxSLIDER_BORDERTEXT_Y);
         }
@@ -492,7 +492,7 @@ void wxSlider::DoSetSize(int x, int y, int w, int h, int sizeFlags)
 
     // If the control has labels, we still need to call this again because
     // the labels alter the control's w and h values.
-        wxControl::DoSetSize( x + wxSLIDER_PADDING, y + wxSLIDER_PADDING, w + wxSLIDER_PADDING * 2, h + wxSLIDER_PADDING, sizeFlags );
+    wxControl::DoSetSize( x + wxSLIDER_PADDING, y + wxSLIDER_PADDING, w - wxSLIDER_PADDING * 2, h + wxSLIDER_PADDING, sizeFlags );
 
     m_minWidth = minWidth;
 }
