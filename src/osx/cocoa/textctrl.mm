@@ -902,7 +902,13 @@ bool wxNSTextFieldControl::CanPaste() const
 
 void wxNSTextFieldControl::SetEditable(bool editable)
 {
-    [m_textField setEditable:editable];
+    if( editable )
+        [m_textField setEditable: true];
+    else
+    {
+        [m_textField setSelectable: true];
+        [m_textField setFocusRingType: NSFocusRingTypeNone];
+    }
 }
 
 void wxNSTextFieldControl::GetSelection( long* from, long* to) const
