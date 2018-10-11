@@ -151,7 +151,6 @@ int wxDialog::ShowModal()
     wxDialog::OSXEndModalDialog();
 
     m_eventLoop = NULL;
-    m_parent->Raise();
 
     if( m_parent )
         m_parent->Raise();
