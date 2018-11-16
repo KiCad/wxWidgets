@@ -133,7 +133,10 @@ int wxChoice::DoInsertItems(const wxArrayStringsAdapter & items,
         wxString text = items[i];
         if (text == wxEmptyString)
             text = " ";  // menu items can't have empty labels
-        m_popUpMenu->Insert( idx, i+1, text );
+        if (text == wxT("---"))
+            m_popUpMenu->InsertSeparator( idx );
+        else
+            m_popUpMenu->Insert( idx, i+1, text );
         m_datas.Insert( NULL, idx );
         AssignNewItemClientData(idx, clientData, i, type);
     }
