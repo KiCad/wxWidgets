@@ -188,6 +188,10 @@
         #define wxUSE_UTF8_LOCALE_ONLY 0
     #endif
 
+    #if wxUSE_UNICODE_UTF8
+        #error "wxUSE_UNICODE_UTF8 is not thread-safe and is therefore not compatible with Kicad"
+    #endif
+
     #ifndef wxUSE_UNICODE_UTF8
         #define wxUSE_UNICODE_UTF8 0
     #endif
