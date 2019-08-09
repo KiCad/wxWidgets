@@ -268,6 +268,9 @@ wxAcceleratorEntry::ParseAccel(const wxString& text, int *flagsOut, int *keyOut)
                 keyCode = IsNumberedAccelKey(current, wxTRANSLATE("SPECIAL"),
                                              WXK_SPECIAL1, 1, 20);
 
+            if( current == "backspace" )
+                keyCode = WXK_BACK;
+
             if ( !keyCode )
             {
                 wxLogDebug(wxT("Unrecognized accel key '%s', accel string ignored."),
