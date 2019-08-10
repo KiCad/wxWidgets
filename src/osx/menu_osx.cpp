@@ -733,7 +733,9 @@ void wxMenuBar::MacInstallMenuBar()
         else 
             appleItem->SetItemLabel(wxItem->GetItemLabel());
     }
-    
+
+#if 0 // This doesn't play well with Kicad's resolve-on-open menus
+
     menuid = wxApp::s_macPreferencesMenuItemId;
     appleItem = m_appleMenu->FindItem(menuid);
     wxItem = FindItem(menuid);
@@ -744,6 +746,8 @@ void wxMenuBar::MacInstallMenuBar()
         else 
             appleItem->SetItemLabel(wxItem->GetItemLabel());
     }
+
+#endif
     
         
 #if 0
