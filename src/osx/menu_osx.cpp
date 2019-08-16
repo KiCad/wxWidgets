@@ -116,6 +116,10 @@ void wxMenu::SetNoEventsMode( bool noEvents )
 bool wxMenu::DoInsertOrAppend(wxMenuItem *item, size_t pos)
 {
     wxASSERT_MSG( item != NULL, wxT("can't append NULL item to the menu") );
+
+    if( pos == -1 )
+        pos = GetMenuItemCount() - 1;
+
     GetPeer()->InsertOrAppend( item, pos );
 
     bool check = false;
