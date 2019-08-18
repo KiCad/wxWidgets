@@ -295,6 +295,9 @@ void wxBell()
 {
     self = [super init];
     firstPass = YES;
+
+    [NSWindow setAllowsAutomaticWindowTabbing: NO];
+    
     return self;
 }
 
